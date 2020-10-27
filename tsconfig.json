@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    // See https://github.com/microsoft/TypeScript/wiki/Node-Target-Mapping
+    // for correct target-to-node version mapping.
+    "target": "es2018",
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "noEmitOnError": true,
+    // This lets us use new language features.
+    "lib": ["esnext"],
+    "strict": true,
+    "outDir": "dist",
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "typeRoots": ["src/@types", "node_modules/@types"]
+  }
+}

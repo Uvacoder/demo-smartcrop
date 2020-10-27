@@ -1,0 +1,12 @@
+/node_modules
+npm-debug.log
+/.idea
+.env
+.env.*.local
+/logs/*
+/dist
+junit.xml
+
+temp.csv
+token.json
+
