@@ -1,10 +1,18 @@
 // From https://github.com/jwagner/smartcrop.js/pull/100/
 declare module 'smartcrop-sharp' {
+  export interface CropScore {
+    detail: number;
+    saturation: number;
+    skin: number;
+    boost: number;
+    total: number;
+  }
   export interface Crop {
     x: number;
     y: number;
     width: number;
     height: number;
+    score: CropScore;
   }
   export interface CropResult {
     topCrop: Crop;
