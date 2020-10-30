@@ -1,7 +1,7 @@
 export function getHtml(
   data: Array<{
     file: string;
-    scores: Array<{ id: string; score: number }>;
+    scores: Array<{ id: string; score: number; faces: boolean }>;
   }>
 ) {
   return `<html>
@@ -56,6 +56,12 @@ export function getHtml(
 ${data
   .map(({ file, scores }) => {
     const topId = scores.slice().sort((a, b) => {
+      if (a.faces && !b.faces) {
+        return -1;
+      }
+      if (b.faces && !a.faces) {
+        return 1;
+      }
       return b.score - a.score;
     })[0].id;
 
@@ -66,7 +72,7 @@ ${scores
     (score) =>
       `          <td><img src="output-${score.id}/${file}" ${
         score.id === topId ? 'class="top" ' : ''
-      }/><span>${score.score}</span></td>
+      }/><span>${score.score}${score.faces ? ' (face)' : ''}</span></td>
 `
   )
   .join('')}        </tr>
@@ -79,7 +85,9 @@ ${scores
           <th>Center-Crop</th>
           <th>Smart-Crop</th>
           <th>Smart-Crop (Thirds)</th>
+          <th>Smart-Crop (Faces)</th>
         </tr>
+      </thead>
     </table>
   </body>
 </html>

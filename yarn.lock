@@ -7,6 +7,11 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.5.tgz#e92d3b8f76583efa26c1a63a21c9d3c1143daa29"
   integrity sha512-H5Wn24s/ZOukBmDn03nnGTp18A60ny9AmCwnEcgJiTgSGsCO7k+NWP7zjCCbhlcnVCoI+co52dUAt9GMhOSULw==
 
+"@types/node@>6":
+  version "14.14.6"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.6.tgz#146d3da57b3c636cc0d1769396ce1cfa8991147f"
+  integrity sha512-6QlRuqsQ/Ox/aJEQWBEJG7A9+u7oSYl3mem/K8IzxXG/kAGbV1YPD9Bg9Zw3vyxC/YP+zONKwy8hGkSt1jxFMw==
+
 "@types/node@^10.17.43":
   version "10.17.43"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.17.43.tgz#af70c6de04841d9216fc2b58e427c8a823b83418"
@@ -264,10 +269,22 @@ mkdirp-classic@^0.5.2, mkdirp-classic@^0.5.3:
   resolved "https://registry.yarnpkg.com/mkdirp-classic/-/mkdirp-classic-0.5.3.tgz#fa10c9115cc6d8865be221ba47ee9bed78601113"
   integrity sha512-gKLcREMhtuZRwRAfqP3RFW+TK4JqApVBtOIftVgjuABpAtpxhPGaDcfvbhNvD0B8iD1oUr/txX35NjcaY6Ns/A==
 
+nan@^2.13.2, nan@^2.14.0:
+  version "2.14.2"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.2.tgz#f5376400695168f4cc694ac9393d0c9585eeea19"
+  integrity sha512-M2ufzIiINKCuDfBSAUr1vWQ+vuVcA9kqx8JJUsbQi6yf1uGRyb7HfpdfUr5qLXf3B/t8dPvcjhKMmlfnP47EzQ==
+
 napi-build-utils@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/napi-build-utils/-/napi-build-utils-1.0.2.tgz#b1fddc0b2c46e380a0b7a76f984dd47c41a13806"
   integrity sha512-ONmRUqK7zj7DWX0D9ADe03wbwOBZxNAfF20PlGfCWQcD3+/MakShIHrMqx9YwPTfxDdF1zLeL+RGZiR9kGMLdg==
+
+native-node-utils@^0.2.7:
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/native-node-utils/-/native-node-utils-0.2.7.tgz#dbf7fca4cfee579585d5e04d4564749bd56534a3"
+  integrity sha512-61v0G3uVxWlXHppSZGwZi+ZEIgGUKI8QvEkEJLb1GVePI7P8SBe+G747z+QMXSt4TxfgbVZP0DyobbRKYVIjdw==
+  dependencies:
+    nan "^2.13.2"
 
 node-abi@^2.7.0:
   version "2.19.1"
@@ -312,6 +329,25 @@ once@^1.3.1, once@^1.4.0:
   integrity sha1-WDsap3WWHUsROsF9nFC6753Xa9E=
   dependencies:
     wrappy "1"
+
+opencv-build@^0.1.9:
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/opencv-build/-/opencv-build-0.1.9.tgz#e10f08c4fbfd674ffd498214420883530483cbf9"
+  integrity sha512-tgT/bnJAcYROen9yaPynfK98IMl62mPSgMLmTx41911m5bczlq21xtE5r+UWLB/xEo/0hKk6tl5zHyxV/JS5Rg==
+  dependencies:
+    npmlog "^4.1.2"
+
+opencv4nodejs@^5.6.0:
+  version "5.6.0"
+  resolved "https://registry.yarnpkg.com/opencv4nodejs/-/opencv4nodejs-5.6.0.tgz#330a397d61070194a78c6fdfb793f7d8b82b5414"
+  integrity sha512-JvcT1hb2JUCdntcVABgD9Gprr+gkXBe+jhHKvrr0Ug51y087K4ybm0vHBQVzI2ei1aJxEc9tNknPL9rpyx5Xuw==
+  dependencies:
+    nan "^2.14.0"
+    native-node-utils "^0.2.7"
+    npmlog "^4.1.2"
+    opencv-build "^0.1.9"
+  optionalDependencies:
+    "@types/node" ">6"
 
 prebuild-install@^5.3.5:
   version "5.3.6"

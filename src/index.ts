@@ -1,9 +1,11 @@
+import cv from 'opencv4nodejs';
 import smartcrop, { Crop, CropScore } from 'smartcrop-sharp';
 import { promises as fs } from 'fs';
 import sharp, { Sharp } from 'sharp';
 import { getHtml } from './getHtml';
 
-type CropResult = [Sharp, CropScore | undefined];
+type CropResult = [Sharp, CropScore | undefined, boolean];
+
 function crop(image: Sharp, crop: Pick<Crop, 'x' | 'y' | 'width' | 'height'>) {
   return image.extract({
     top: crop.y,
@@ -37,7 +39,7 @@ async function cropSmartThirds(fileName: string): Promise<CropResult> {
     ruleOfThirds: true,
   });
 
-  return [crop(image, topCrop), topCrop.score];
+  return [crop(image, topCrop), topCrop.score, false];
 }
 
 async function cropCenter(fileName: string): Promise<CropResult> {
@@ -53,6 +55,7 @@ async function cropCenter(fileName: string): Promise<CropResult> {
       height: shortestDimension,
     }),
     undefined,
+    false,
   ];
 }
 
@@ -67,7 +70,35 @@ async function cropSmart(fileName: string): Promise<CropResult> {
     ruleOfThirds: false,
   });
 
-  return [crop(image, topCrop), topCrop.score];
+  return [crop(image, topCrop), topCrop.score, false];
+}
+
+async function cropFaces(fileName: string): Promise<CropResult> {
+  const image = sharp(fileName);
+  const dimensions = await getDimensions(image);
+
+  const classifier = new cv.CascadeClassifier(cv.HAAR_FRONTALFACE_ALT2);
+  const img = await cv.imreadAsync(fileName);
+  const grayImg = await img.bgrToGrayAsync();
+  const { objects: faces } = await classifier.detectMultiScaleAsync(grayImg);
+
+  const boost = faces.map((face) => ({
+    x: face.x,
+    y: face.y,
+    width: face.width,
+    height: face.height,
+    weight: 1.0,
+  }));
+
+  const shortestDimension = Math.min(dimensions.width, dimensions.height);
+  const { topCrop } = await smartcrop.crop(fileName, {
+    width: shortestDimension,
+    height: shortestDimension,
+    ruleOfThirds: false,
+    boost,
+  });
+
+  return [crop(image, topCrop), topCrop.score, faces.length > 0];
 }
 
 async function main() {
@@ -89,6 +120,10 @@ async function main() {
           id: 'smart-thirds',
           cropMethod: cropSmartThirds,
         },
+        {
+          id: 'smart-faces',
+          cropMethod: cropFaces,
+        },
       ];
 
       return {
@@ -97,13 +132,13 @@ async function main() {
           outputs.map(async ({ id, cropMethod }) => {
             const outputFileName = `images/output-${id}/${file}`;
             try {
-              const [image, score] = await cropMethod(inputFileName);
+              const [image, score, faces] = await cropMethod(inputFileName);
               const adjustedScore = Math.floor((score?.total || 0) * 10000000);
               await image.toFile(outputFileName);
-              return { id, score: adjustedScore };
+              return { id, score: adjustedScore, faces };
             } catch (e) {
               // ignore errors processing images
-              return { id, score: 0 };
+              return { id, score: 0, faces: false };
             }
           })
         ),
